@@ -25,4 +25,8 @@ class Quotation extends Model
     public function jobDescription() {
         return $this->belongsT0(JobDescription::class);
     }
+
+    public function approver(){
+        return $this->belongsTo(User::class, 'approver_id');
+    }
 }
