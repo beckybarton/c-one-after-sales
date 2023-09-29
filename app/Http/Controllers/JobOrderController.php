@@ -18,6 +18,10 @@ class JobOrderController extends Controller
             'customername' => 'required|max:255',
             'unitcode' => 'required|max:255',
             'unitdescription' => 'required|max:255',
+            'customeraddress' => 'required|max:255',
+            'customercontact' => 'required|max:255',
+            'engine' => 'required|max:255',
+            'platenumber' => 'required|max:255',
         ]);
     
         $jobOrder = new JobOrder();
@@ -26,6 +30,10 @@ class JobOrderController extends Controller
         $jobOrder->customername = $validatedData['customername'];
         $jobOrder->unitcode = $validatedData['unitcode'];
         $jobOrder->unitdescription = $validatedData['unitdescription'];
+        $jobOrder->customeraddress = $validatedData['customeraddress'];
+        $jobOrder->customercontact = $validatedData['customercontact'];
+        $jobOrder->engine = $validatedData['engine'];
+        $jobOrder->platenumber = $validatedData['platenumber'];
 
         $jobOrder->save();
 
@@ -168,15 +176,29 @@ class JobOrderController extends Controller
 
     // public function generatequotation(){
     public function generatequotation($jobOrderId) {
-        $jobOrder = JobOrder::find($jobOrderId);
+        $jobOrder = JobOrder::with([
+            'jobDescriptions', 
+            'user', 
+            'job_order_materials' => function ($filterdeleted) {
+                $filterdeleted->where('deleted', 0);
+            }, 
+            'quotation'
+        ])->find($jobOrderId);
+        // $jobOrder = JobOrder::find($jobOrderId);
         $data = [
             'title' => 'Welcome to HDTuto.com',
             'jobOrder' => $jobOrder,
             // ... add other data as needed
         ];
 
-        $pdf = PDF::loadView('pdfs.quotation', $data);
+        // $pdf = PDF::loadView('pdfs.quotation', $data);
         // dd($jobOrder->customername);
+        $pdf = PDF::loadView('pdfs.quotation', $data)
+            ->setPaper('legal', 'portrait');
+
+
+        // return $pdf->stream();  // or ->download('filename.pdf');
+
 
         
         return $pdf->download('hdtuto.pdf');

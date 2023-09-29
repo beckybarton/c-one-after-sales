@@ -30,43 +30,43 @@
               </tr>
           </thead>
           <tbody>
-              @foreach($jobOrders as $jobOrder)
-                  <tr>
-                      <td class="py-2 px-4 border">
-                          <span class="font-weight-bold">ASJO-{{ $jobOrder->created_at->format('Y') }}-{{sprintf('%05d',$jobOrder->id)}}</span><br>
-                          <small class="text-muted">JO {{ ucwords($jobOrder->status) }}</small>
-                          @if($jobOrder->quotation && $jobOrder->quotation->status == "pending")
-                              <span class="text-muted"> || Quotation for Approval</span>
-                          @endif
-                      </td>
-                      <td class="py-2 px-4 border">
-                          <span class="font-weight-bold">{{ ucwords($jobOrder->customername) }}</span><br>
-                          <small class="text-muted">{{ ucwords($jobOrder->unitcode) }} | {{ ucwords($jobOrder->unitdescription) }}</small>
-                      </td>
-                      <td class="py-2 px-4 border">
-                          <button class="view-data btn btn-success btn-sm" type="button" data-target="#viewModal" data-jobOrder="{{ $jobOrder }}">
-                              <i class="fas fa-eye"></i>
-                          </button>
-                      </td>
-                      <td class="py-2 px-4 border">
-                          @if ($jobOrder->status == "approved")
-                              <button class="new-quotation btn btn-success btn-sm" type="button" data-target="#newquotationmodal" data-jobOrder="{{ $jobOrder }}">
-                                  <i class="fas fa-comment-dollar"></i>
-                              </button>
-                          @endif
-                          @if ($jobOrder->quotation && $jobOrder->quotation->status == "pending" && auth()->user()->isAdmin())
-                              <button class="review-quotation btn btn-success btn-sm" data-modaltype="reviewmodal" data-target="#reviewquotationmodal" data-jobOrder="{{ $jobOrder }}">
-                                <i class="fas fa-check"></i>
-                              </button>
-                          @endif
-                          @if ($jobOrder->quotation && $jobOrder->quotation->status == "approved")
-                              <button class="generate-quotation btn btn-success btn-sm" data-jobOrder="{{ $jobOrder->id }}" id="generate-quotation">
-                                  <i class="fas fa-download"></i>
-                              </button>
-                          @endif
-                      </td>
-                  </tr>
-              @endforeach
+            @foreach($jobOrders as $jobOrder)
+              <tr>
+                <td class="py-2 px-4 border">
+                  <span class="font-weight-bold">ASJO-{{ $jobOrder->created_at->format('Y') }}-{{sprintf('%05d',$jobOrder->id)}}</span><br>
+                  <small class="text-muted">JO {{ ucwords($jobOrder->status) }}</small>
+                  @if($jobOrder->quotation && $jobOrder->quotation->status == "pending")
+                      <span class="text-muted"> || Quotation for Approval</span>
+                  @endif
+                </td>
+                <td class="py-2 px-4 border">
+                  <span class="font-weight-bold">{{ ucwords($jobOrder->customername) }}</span><br>
+                  <small class="text-muted">{{ ucwords($jobOrder->unitcode) }} | {{ ucwords($jobOrder->unitdescription) }}</small>
+                </td>
+                <td class="py-2 px-4 border">
+                  <button class="view-data btn btn-success btn-sm" type="button" data-target="#viewModal" data-jobOrder="{{ $jobOrder }}">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </td>
+                <td class="py-2 px-4 border">
+                  @if ($jobOrder->status == "approved")
+                    <button class="new-quotation btn btn-success btn-sm" type="button" data-target="#newquotationmodal" data-jobOrder="{{ $jobOrder }}">
+                      <i class="fas fa-comment-dollar"></i>
+                    </button>
+                  @endif
+                  @if ($jobOrder->quotation && $jobOrder->quotation->status == "pending" && auth()->user()->isAdmin())
+                    <button class="review-quotation btn btn-success btn-sm" data-modaltype="reviewmodal" data-target="#reviewquotationmodal" data-jobOrder="{{ $jobOrder }}">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  @endif
+                    @if ($jobOrder->quotation && $jobOrder->quotation->status == "approved")
+                    <button class="generate-quotation btn btn-success btn-sm" data-jobOrder="{{ $jobOrder->id }}" class="generate-quotation" id="generate-quotation">
+                      <i class="fas fa-download"></i>
+                    </button>
+                  @endif
+                </td>
+              </tr>
+            @endforeach
           </tbody>
         </table>
 
@@ -86,19 +86,41 @@
               <div class="modal-body">
                   <form action="{{ route('joborder.post') }}" method="POST">
                       @csrf
-                      <div class="form-group">
-                          <label for="customername">Customer Name</label>
-                          <input type="text" class="form-control" name="customername" id="customername" required>
-                      </div>
+                      <div class="compact-form">
+                        <div class="form-group">
+                            <label for="customername">Customer Name</label>
+                            <input type="text" class="form-control" name="customername" id="customername" required>
+                        </div>
 
-                      <div class="form-group">
-                          <label for="unitcode">Unit Code</label>
-                          <input type="text" class="form-control" name="unitcode" id="unitcode" required>
-                      </div>
+                        <div class="form-group">
+                            <label for="customeraddress">Customer Address</label>
+                            <input type="text" class="form-control" name="customeraddress" id="customeraddress" required>
+                        </div>
 
-                      <div class="form-group">
-                          <label for="unitdescription">Unit Description</label>
-                          <input type="text" class="form-control" name="unitdescription" id="unitdescription" required>
+                        <div class="form-group">
+                            <label for="customercontact">Customer Contact Number</label>
+                            <input type="text" class="form-control" name="customercontact" id="customercontact" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unitcode">Unit Code</label>
+                            <input type="text" class="form-control" name="unitcode" id="unitcode" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unitdescription">Unit Description</label>
+                            <input type="text" class="form-control" name="unitdescription" id="unitdescription" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="engine">Engine</label>
+                            <input type="text" class="form-control" name="engine" id="engine" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="platenumber">Plate Number</label>
+                            <input type="text" class="form-control" name="platenumber" id="platenumber" required>
+                        </div>
                       </div>
 
                       <div id="fieldsContainer" class="my-3">

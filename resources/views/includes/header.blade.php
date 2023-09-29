@@ -15,6 +15,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 
+  <style>
+    .compact-form .form-group {
+        margin-bottom: 0.2rem;  /* Reducing margin-bottom for compactness */
+    }
+  </style>
 
 </head>
 

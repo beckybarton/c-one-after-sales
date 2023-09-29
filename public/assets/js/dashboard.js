@@ -652,10 +652,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    document.getElementById('generate-quotation').addEventListener('click', function() {
-        const jobId = this.getAttribute('data-jobOrder');
-        window.location.href = `/generate-quotation/${jobId}`;
+    $(document).ready(function() {
+        $('.generate-quotation').on('click', function() {
+            const jobId = this.getAttribute('data-jobOrder');
+            console.log(jobId);
+            window.location.href = `/generate-quotation/${jobId}`;
+        });
     });
+
+    // document.getElementById('generate-quotation').addEventListener('click', function() {
+    //     const jobId = this.getAttribute('data-jobOrder');
+    //     console.log(jobId);
+    //     window.location.href = `/generate-quotation/${jobId}`;
+    // });
     
 });
 

@@ -15,6 +15,10 @@ class JobOrder extends Model
         'unitdescription',
         'approver_id',
         'approved_date',
+        'customeraddress',
+        'customercontact',
+        'engine',
+        'platenumber',
     ];
     
     public function jobDescriptions() {
@@ -33,5 +37,14 @@ class JobOrder extends Model
     public function quotation(){
         return $this->hasOne(Quotation::class);
     }
+
+    public function getTotalAmountAttribute(){
+        return $this->jobDescriptions->sum('amount');
+    }
+
+    public function getTotalAmountMaterialsAttribute(){
+        return $this->job_order_materials->sum('amount');
+    }
+    
     
 }
