@@ -1,5 +1,6 @@
 @include('includes.header')
 @include('includes.layout_header')
+@auth
   <header class="bg-white shadow">
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
       <h1 class="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
@@ -33,7 +34,7 @@
             @foreach($jobOrders as $jobOrder)
               <tr>
                 <td class="py-2 px-4 border">
-                  <span class="font-weight-bold">ASJO-{{ $jobOrder->created_at->format('Y') }}-{{sprintf('%05d',$jobOrder->id)}}</span><br>
+                  <span class="font-weight-bold">ASJOv2-{{ $jobOrder->created_at->format('Y') }}-{{sprintf('%05d',$jobOrder->id)}}</span><br>
                   <small class="text-muted">JO {{ ucwords($jobOrder->status) }}</small>
                   @if($jobOrder->quotation && $jobOrder->quotation->status == "pending")
                       <span class="text-muted"> || Quotation for Approval</span>
@@ -311,7 +312,7 @@
     <!-- END OF QUOTATION MODAL -->
 
     <!-- QUOTATION FOR APPROVAL -->
-    <div id="reviewquotationmodal" class="fixed top-0 left-0 w-full h-full overflow-y-auto flex items-center justify-center bg-black bg-opacity-50 hidden  z-50">
+    <div id="reviewquotationmodal" class="reviewquotationmodal fixed top-0 left-0 w-full h-full overflow-y-auto flex items-center justify-center bg-black bg-opacity-50 hidden  z-50">
       <!-- <div style="width: 75%;" class="bg-white rounded-xl shadow-xl p-8"> -->
       <div style="width: 75%; height: 80vh; overflow-y: auto !important" class="bg-white rounded-xl shadow-xl p-8 overflow-y-auto">
         <h2 class="text-2xl mb-4">QUOTATION FOR APPROVAL</h2>
@@ -374,8 +375,8 @@
 
           <div class="row mt-2">
             <div class="col-8 text-right font-weight-bold">VAT:</div>
-            <div class="col-2">
-              <input type="checkbox" name="vatcheckbox" id="reviewvatcheckbox" class="form-control text-right vatcheckbox" aria-label="Checkbox for following text input">
+            <div class="col-2" style="display:none;">
+              <input type="checkbox" name="reviewvatcheckbox" id="reviewvatcheckbox" class="form-control text-right reviewvatcheckbox" aria-label="Checkbox for following text input">
             </div>
             <div class="col-4">
               <input class="form-control font-weight-bold text-right" id="reviewvatInput" name="vat" type="text" readonly>
@@ -407,4 +408,5 @@
   </script>
 
   </main>
+@endauth
 @include('includes.footer')
