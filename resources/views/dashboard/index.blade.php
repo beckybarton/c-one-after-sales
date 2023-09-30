@@ -28,6 +28,7 @@
                   <th class="py-2 px-4 text-left uppercase tracking-wider">Details</th>
                   <th class="py-2 px-4 text-left uppercase tracking-wider">Job Order</th>
                   <th class="py-2 px-4 text-left uppercase tracking-wider">Quotation</th>
+                  <th class="py-2 px-4 text-left uppercase tracking-wider">Billing</th>
               </tr>
           </thead>
           <tbody>
@@ -55,7 +56,7 @@
                       <i class="fas fa-comment-dollar"></i>
                     </button>
                   @endif
-                  @if ($jobOrder->quotation && $jobOrder->quotation->status == "pending" && auth()->user()->isAdmin())
+                  @if ($jobOrder->quotation && $jobOrder->quotation->status == "pending" && (auth()->user()->isAdmin() || auth()->user()->isApprover()))
                     <button class="review-quotation btn btn-success btn-sm" data-modaltype="reviewmodal" data-target="#reviewquotationmodal" data-jobOrder="{{ $jobOrder }}">
                       <i class="fas fa-check"></i>
                     </button>
@@ -63,6 +64,13 @@
                     @if ($jobOrder->quotation && $jobOrder->quotation->status == "approved")
                     <button class="generate-quotation btn btn-success btn-sm" data-jobOrder="{{ $jobOrder->id }}" class="generate-quotation" id="generate-quotation">
                       <i class="fas fa-download"></i>
+                    </button>
+                  @endif
+                </td>
+                <td class="py-2 px-4 border">
+                  @if ($jobOrder->quotation && $jobOrder->quotation->status == "approved")
+                    <button class="review-quotation btn btn-success btn-sm" data-modaltype="reviewmodal" data-target="#reviewquotationmodal" data-jobOrder="{{ $jobOrder }}">
+                      <i class="fas fa-check"></i>
                     </button>
                   @endif
                 </td>
@@ -278,9 +286,10 @@
 
             <div class="row mt-2">
               <div class="col-8 text-right font-weight-bold">VAT:</div>
-              <div class="col-2">
-                <input type="checkbox" name="vatcheckbox" id="vatcheckbox" class="form-control text-right vatcheckbox" aria-label="Checkbox for following text input">
-              </div>
+                <div class="col-2">
+                  <input type="checkbox" name="vatcheckbox" id="vatcheckbox" class="form-control text-right vatcheckbox" aria-label="Checkbox for following text input">
+                </div>
+              
               <div class="col-2">
                   <input class="form-control font-weight-bold text-right" id="vatInput" name="vat" type="text" readonly>
               </div>
@@ -296,7 +305,9 @@
             <div class="row mt-2">
             <div class="col-8 text-right font-weight-bold"></div>
               <div class="col-4">
-                <div class="text-right font-weight-bold"><button id="quoteJo" type="submit" class="mt-4 bg-green-500 text-white px-4 py-2 rounded quoteJo">Send Quotation</button></div>
+                @if($jobOrder->quotation->status != "approved")
+                  <div class="text-right font-weight-bold"><button id="quoteJo" type="submit" class="mt-4 bg-green-500 text-white px-4 py-2 rounded quoteJo">Send Quotation</button></div>
+                @endif
               </div>
             </div>
           </form>

@@ -50,7 +50,7 @@
         .company-name {
             font-size: 24px;
             font-weight: bold;
-            font-family: Arial Black, sans-serif;
+            font-family: 'Arial Black', 'Arial Bold', Arial, sans-serif;
         }
         .company-address,
         .company-contacts {
