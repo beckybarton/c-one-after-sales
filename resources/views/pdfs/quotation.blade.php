@@ -123,7 +123,7 @@
                 <td><strong>Contact No:</strong></td>
                 <td>{{ucwords($jobOrder->customercontact)}}</td>
                 <td><strong>Reference #:</strong></td>
-                <td class="text-center highlight">{{ 'ASQ2-' . $jobOrder->quotation->created_at->format('Y') . '-' . sprintf('%04d', $jobOrder->quotation->id) }}</td>
+                <td class="text-center highlight">{{ 'ASQv2-' . $jobOrder->quotation->created_at->format('Y') . '-' . sprintf('%04d', $jobOrder->quotation->id) }}</td>
             </tr>
 
             <tr>

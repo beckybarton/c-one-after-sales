@@ -111,6 +111,8 @@ document.addEventListener('DOMContentLoaded', function() {
         $('.new-quotation').click(function() {
             var jobOrder = $(this).data('joborder');
 
+            
+
             const date = new Date(jobOrder.created_at);
             const year = date.getFullYear();
             const formattedId = String(jobOrder.id).padStart(5, '0');
@@ -313,11 +315,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 subTotal.value = (sumjobdescription + summaterial).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 vatInput.value = ((sumjobdescription + summaterial) * 0.12).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 document.getElementById('totalInput').value = ((sumjobdescription + summaterial) * 1.12).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ;
+
+                
             }   
             else{
                 updateTotal();
             }
             
+            if(jobOrder.quotation.status === "approved"){
+                document.getElementById('vatcheckbox').style = "display:none";
+            }
+            else{
+                document.getElementById('vatcheckbox').style = "";
+            }
+
+           
+            console.log(jobOrder.quotation.status);
             
             document.getElementById('newquotationmodal').classList.remove('hidden');  
         });
