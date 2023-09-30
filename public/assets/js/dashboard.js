@@ -179,6 +179,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         descriptionamountinput.value = job_description.amount;
                     }
 
+                    if(jobOrder.quotation.status == "approved"){
+                        descriptionamountinput.style = 'display:none';
+                    }
+
                     descriptionamountcell.appendChild(descriptionamountinput);
                     newRow.appendChild(descriptionamountcell);
 
@@ -215,6 +219,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     materialinput.name = 'materials[]';
                     materialinput.type = 'text';
                     materialinput.placeholder = 'item';
+                    if(jobOrder.quotation.status == "approved"){
+                        materialinput.readOnly = true;
+                    }
                     materialinput.value = material.material;
                     materialinput.classList.add(...'block w-full rounded-md border-2 border-gray-600 px-4 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'.split(' '));   
                     materialcell.appendChild(materialinput);
@@ -242,6 +249,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     amountinput.placeholder = 'rate';
                     amountinput.classList.add(...'materialamount amount block w-full rounded-md border-2 border-gray-600 px-4 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'.split(' '));
                     amountinput.value = material.amount;
+                    if(jobOrder.quotation.status == "approved"){
+                        amountinput.style = 'display:none';
+                    }
+                    
                     amountcell.appendChild(amountinput);
                     newRow.appendChild(amountcell);
                     
@@ -250,6 +261,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     deleteButton.innerHTML = '<i class="bi bi-trash-fill"></i>'; 
                     deleteButton.type = 'button';
                     deleteButton.classList.add('delete-row');
+                    if(jobOrder.quotation.status == "approved"){
+                        deleteButton.style = 'display:none';
+                    }
 
                     deleteButton.addEventListener('click', function(e) {
                         var materialToDelete = e.target.closest('tr');
