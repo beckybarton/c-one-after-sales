@@ -29,7 +29,11 @@ Route::post('/register', [RegisterController::class, 'registerSave'])->name('reg
 Route::get('/users', [UserController::class, 'index'])->name('users');
 
 // JOB ORDERS
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('index');
+// Route::get('/dashboard', [DashboardController::class, 'index'])->name('index');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('index');
+});
+
 Route::post('/joborder', [JobOrderController::class, 'saveJobOrder'])->name('joborder.post');
 Route::post('/approve-jo', [JobOrderController::class, 'approveJobOrder'])->name('joborder.approve');
 Route::post('/quote-jo', [JobOrderController::class, 'quoteJobOrder'])->name('joborder.quote');

@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // CREATE JO
     document.getElementById('openModalBtn').addEventListener('click', function() {
         document.getElementById('myModal').classList.remove('hidden'); 
-        console.log("ok");
     });
 
 
@@ -293,7 +292,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 var summaterial = jobOrder.job_order_materials.reduce(function(total, material) {
                     return total + material.amount;
                 }, 0);
-                // var vatCheckedFirst = (sumjobdescription + summaterial) * 0.12;
                 
                 document.getElementById('vatcheckbox').checked = true;
                 totalLabor.value = sumjobdescription.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -421,7 +419,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        console.log(modalType);
         let computedvat = 0;
         if(vatcheckbox.checked){
             computedvat = (totaldescriptionamount + totalmaterialamount - totalhiddenmaterial) * 0.12;
@@ -465,11 +462,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $(document).ready(function() {
         $('.review-quotation').click(function(e) { 
+            // var reviewquotationmodal = $('reviewquotationmodal');
+            // reviewquotationmodal.empty();  // Clear existing items
+
             modalType = $(this).data('modaltype');  
             var jobOrder = $(this).data('joborder');
             vat = jobOrder.quotation.vat;
 
             $('.reviewquotationjoId').val(jobOrder.id);
+            document.getElementById('reviewvatcheckbox').checked = false;
+            document.getElementById('reviewvatInput').value = "0.00";
+            if(vat === 1){
+                document.getElementById('reviewvatcheckbox').checked = true;
+            }
+            
+            console.log(vat);
 
             const date = new Date(jobOrder.created_at);
             const year = date.getFullYear();
@@ -646,7 +653,7 @@ document.addEventListener('DOMContentLoaded', function() {
     $(document).ready(function() {
         $('.generate-quotation').on('click', function() {
             const jobId = this.getAttribute('data-jobOrder');
-            console.log(jobId);
+            // console.log(jobId);
             window.location.href = `/generate-quotation/${jobId}`;
         });
     });
