@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const newInput = document.createElement('input');
         newInput.type = 'text';
         newInput.name = 'descriptions[]';
-        // newInput.className = "form-control block w-full rounded-md border-0  px-4 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6";
         newInput.className = "form-control";
         newInput.style.marginTop = '1rem';
         newInput.style.marginBottom = '1rem'; 
@@ -246,13 +245,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     amountinput.value = material.amount;
                     amountcell.appendChild(amountinput);
                     newRow.appendChild(amountcell);
-
-                    // updateTotal();
                     
                     var deleteCell = document.createElement('td');
                     var deleteButton = document.createElement('button');
-                    deleteButton.innerHTML = '<i class="bi bi-trash-fill"></i>';  // or any other text you want on the button
-                    deleteButton.type = 'button';  // To ensure it doesn't submit a form if inside one
+                    deleteButton.innerHTML = '<i class="bi bi-trash-fill"></i>'; 
+                    deleteButton.type = 'button';
                     deleteButton.classList.add('delete-row');
 
                     deleteButton.addEventListener('click', function(e) {
@@ -262,8 +259,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             var materialAmount = parseFloat(hiddenAmountInput.value.replace(/,/g, ''));
                             totalhiddenmaterial += materialAmount;
                             updateTotal();
-                            updateVAT(); 
-                        } else {
+                        } 
+                        else {
+
                         }
                         
                         
@@ -295,20 +293,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 var summaterial = jobOrder.job_order_materials.reduce(function(total, material) {
                     return total + material.amount;
                 }, 0);
-                var vatCheckedFirst = (sumjobdescription + summaterial) * 0.12;
+                // var vatCheckedFirst = (sumjobdescription + summaterial) * 0.12;
                 
                 document.getElementById('vatcheckbox').checked = true;
-                document.getElementById('vatInput').value = (vatCheckedFirst).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 totalLabor.value = sumjobdescription.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 totalMaterials.value = (summaterial).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 subTotal.value = (sumjobdescription + summaterial).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                vatInput.value = (sumjobdescription + summaterial).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                // vatInput.value = ((sumjobdescription + summaterial) * 0.12).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                vatInput.value = ((sumjobdescription + summaterial) * 0.12).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 document.getElementById('totalInput').value = ((sumjobdescription + summaterial) * 1.12).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ;
             }   
             else{
                 updateTotal();
-                updateVAT(); 
             }
             
             
@@ -332,7 +327,6 @@ document.addEventListener('DOMContentLoaded', function() {
         materialidinput.style.display = 'none';
         materialidcell.appendChild(materialidinput);
         newMaterialRow.appendChild(materialidcell);
-        //
     
         var materialcell = document.createElement('td');
         var materialinput = document.createElement('input');
@@ -355,7 +349,6 @@ document.addEventListener('DOMContentLoaded', function() {
         newMaterialRow.appendChild(amountcell);
     
         materialslist.appendChild(newMaterialRow);
-        // updateTotal(0);
         updateTotal();
     });
 
@@ -382,6 +375,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let descriptionAmounts = null;
         let materialAmounts = null;
         let vatInput = null;
+        let vatcheckbox = null;
 
         if (modalType === "reviewmodal") {
             amounts = document.querySelectorAll('.amount');
@@ -392,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
             vatInput = document.getElementById('reviewvatInput');
             descriptionAmounts = document.querySelectorAll('.reviewquotationdescriptionamount');
             materialAmounts = document.querySelectorAll('.reviewmaterialamount');
-            // vatInput = document.querySelectorAll('.reviewvatInput');
+            vatcheckbox = document.getElementById('reviewvatcheckbox');
         }
 
         else{
@@ -401,6 +395,7 @@ document.addEventListener('DOMContentLoaded', function() {
             totalMaterials = document.getElementById('totalMaterials');
             totalLabor = document.getElementById('totalLabor');
             subTotal = document.getElementById('subTotal');
+            vatcheckbox = document.getElementById('vatcheckbox');
             descriptionAmounts = document.querySelectorAll('.descriptionamount');
             materialAmounts = document.querySelectorAll('.materialamount');
             vatInput = document.getElementById('vatInput');
@@ -411,8 +406,6 @@ document.addEventListener('DOMContentLoaded', function() {
         amounts.forEach(amount => {
             total += parseFloat(amount.value) || 0;
         });
-        // LABOR
-        // let descriptionAmounts = document.querySelectorAll('.descriptionamount');
 
         let totaldescriptionamount = 0;
         descriptionAmounts.forEach(input => {
@@ -421,49 +414,48 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // MATERIALS
-        // let materialAmounts = document.querySelectorAll('.materialamount');
         let totalmaterialamount = 0;
         materialAmounts.forEach(input => {
             if (input.value) {
                 totalmaterialamount += parseFloat(input.value);
             }
         });
-        computedvat = (totaldescriptionamount + totalmaterialamount - totalhiddenmaterial) * 0.12;
+
+        console.log(modalType);
+        let computedvat = 0;
+        if(vatcheckbox.checked){
+            computedvat = (totaldescriptionamount + totalmaterialamount - totalhiddenmaterial) * 0.12;
+            vatInput.value = (computedvat).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        
 
         totalLabor.value = totaldescriptionamount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         totalMaterials.value = (totalmaterialamount - totalhiddenmaterial).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         subTotal.value = (totaldescriptionamount + totalmaterialamount - totalhiddenmaterial).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        vatInput.value = (computedvat).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        totalInput.value = (computedvat + totaldescriptionamount + totalmaterialamount - totalhiddenmaterial).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        totalInput.value = ((computedvat + totaldescriptionamount + totalmaterialamount - totalhiddenmaterial)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
     document.getElementById('vatcheckbox').addEventListener('change', updateVAT);
 
     function updateVAT() {
         const vatCheckbox = document.getElementById('vatcheckbox');
-        const totalInput = parseFloat(document.getElementById('totalInput').value.replace(/,/g, ''));
-        const vatInput = document.getElementById('vatInput'); // The input where the VAT value will be displayed
-        const overalltotal = document.getElementById('totalInput');
+        const totalMaterials = parseFloat(document.getElementById('totalMaterials').value.replace(/,/g, ''));
+        const totalLabor = parseFloat(document.getElementById('totalLabor').value.replace(/,/g, ''));
+        const vatInput = document.getElementById('vatInput'); 
         const vatRate = 0.12; 
+
+        var vatValue = Intl.NumberFormat('en-US', {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format( (totalMaterials + totalLabor) * vatRate);
         
         if (vatCheckbox.checked) {
-            var vatValue = Intl.NumberFormat('en-US', {
-                style: 'decimal',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }).format(totalInput * vatRate);
-
             vatInput.value = vatValue; 
-
-            var withVatTotal = Intl.NumberFormat('en-US', {
-                style: 'decimal',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }).format((totalInput * vatRate) + totalInput);
-
-            overalltotal.value = withVatTotal;
-        } else {
+            updateTotal();
+        } 
+        
+        else {
             vatInput.value = "0.00"; 
             updateTotal();
         }
@@ -472,7 +464,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     $(document).ready(function() {
-        $('.review-quotation').click(function(e) {  // Include the event object 'e' here
+        $('.review-quotation').click(function(e) { 
             modalType = $(this).data('modaltype');  
             var jobOrder = $(this).data('joborder');
             vat = jobOrder.quotation.vat;
@@ -559,7 +551,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }            
 
-            // var materialslist = document.querySelector('.reviewquotation-materials-list');
             var materialslist = $('.reviewquotation-materials-list');
             materialslist.empty();  // Clear existing items
             materialslist.append('<tr><td><strong>' + "ITEM" + '<strong></td><td><strong>RATE</strong></td></tr>');
@@ -660,11 +651,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // document.getElementById('generate-quotation').addEventListener('click', function() {
-    //     const jobId = this.getAttribute('data-jobOrder');
-    //     console.log(jobId);
-    //     window.location.href = `/generate-quotation/${jobId}`;
-    // });
+    $(document).ready(function() {
+        setTimeout(function() {
+            $(".alert-dismissible").fadeOut('slow');
+        }, 5000);
+    });
     
 });
 
