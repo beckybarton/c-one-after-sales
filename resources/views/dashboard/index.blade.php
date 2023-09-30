@@ -11,12 +11,12 @@
       <div class="relative w-3/4 bg-white overflow-hidden rounded-lg shadow" style="padding: 1%;">
         <button  id="openModalBtn" class=" top-0 right-0 m-4 bg-green-500 text-white px-4 py-2 rounded-md">Add Job Order</button>
         @if (session('success'))
-          <div class="alert alert-success">
+          <div class="alert alert-success alert-dismissible">
             {{ session('success') }}
           </div>
         @endif
         @if (session('error'))
-          <div class="alert alert-danger">
+          <div class="alert alert-danger alert-dismissible">
             {{ session('error') }}
           </div>
         @endif
@@ -144,48 +144,52 @@
     <!-- VIEW MODAL -->
     <div id="viewmodal" class="fixed top-0 left-0 w-full h-full overflow-y-auto flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
       <div class="bg-white rounded-xl shadow-xl w-3/4 max-h-80vh p-8 overflow-y-auto">
-        <h2 class="text-2xl mb-6 font-semibold border-b pb-2">Job Order Details</h2>
-
-        <div class="modal-body my-6">
-          <div class="mb-4 flex justify-between">
-            <label class="font-semibold">JO #</label>
-            <div class="text-gray-700 id"></div>
+        <div class="modal-content">
+          <div class="modal-header">
+              <h2 class="modal-title">After Sales : View Job Order</h2>
           </div>
 
-          <div class="mb-4 flex justify-between">
-            <label class="font-semibold">Customer Name</label>
-            <div class="text-gray-700 customername"></div>
+          <div class="modal-body my-6">
+            <div class="mb-4 flex justify-between">
+              <label class="font-semibold">JO #</label>
+              <div class="text-gray-700 id"></div>
+            </div>
+
+            <div class="mb-4 flex justify-between">
+              <label class="font-semibold">Customer Name</label>
+              <div class="text-gray-700 customername"></div>
+            </div>
+
+            <div class="mb-4 flex justify-between">
+              <label class="font-semibold">Maker</label>
+              <div class="text-gray-700 userid"></div>
+            </div>
+
+            <div class="mb-4 flex justify-between">
+              <label class="font-semibold">Unit Code</label>
+              <div class="text-gray-700 unitcode"></div>
+            </div>
+
+            <div class="mb-4 flex justify-between">
+              <label class="font-semibold">Unit Description</label>
+              <div class="text-gray-700 unitdescription"></div>
+            </div>
+
+              <!-- Job Descriptions -->
+            <div class="job-descriptions-list mt-4"></div>
           </div>
 
-          <div class="mb-4 flex justify-between">
-            <label class="font-semibold">Maker</label>
-            <div class="text-gray-700 userid"></div>
+          <form class="space-y-6" action="{{ route('joborder.approve') }}" method="POST">
+            @csrf
+            <input type="hidden" class="joId" value="" name="joId">
+            <div class="flex justify-end items-center mt-6 space-x-4">
+                <div id="jodecisionContainer" class="jodecisionContainer flex space-x-2">
+                </div>
+            </div>
+          </form>
+          <div class="modal-footer" style="margin-top: 1%;">
+            <button id="closeviewjoBtn" class="btn btn-danger">Close</button>
           </div>
-
-          <div class="mb-4 flex justify-between">
-            <label class="font-semibold">Unit Code</label>
-            <div class="text-gray-700 unitcode"></div>
-          </div>
-
-          <div class="mb-4 flex justify-between">
-            <label class="font-semibold">Unit Description</label>
-            <div class="text-gray-700 unitdescription"></div>
-          </div>
-
-            <!-- Job Descriptions -->
-          <div class="job-descriptions-list mt-4"></div>
-        </div>
-
-        <form class="space-y-6" action="{{ route('joborder.approve') }}" method="POST">
-          @csrf
-          <input type="hidden" class="joId" value="" name="joId">
-          <div class="flex justify-end items-center mt-6 space-x-4">
-              <div id="jodecisionContainer" class="jodecisionContainer flex space-x-2">
-              </div>
-          </div>
-        </form>
-        <div class="modal-footer" style="margin-top: 1%;">
-          <button id="closeviewjoBtn" class="btn btn-danger">Close</button>
         </div>
       </div>
     </div>
@@ -274,7 +278,7 @@
             <div class="row mt-2">
               <div class="col-8 text-right font-weight-bold">VAT:</div>
               <div class="col-2">
-                <input type="checkbox" name="vatcheckbox" id="vatcheckbox" class="form-control text-right" aria-label="Checkbox for following text input">
+                <input type="checkbox" name="vatcheckbox" id="vatcheckbox" class="form-control text-right vatcheckbox" aria-label="Checkbox for following text input">
               </div>
               <div class="col-2">
                   <input class="form-control font-weight-bold text-right" id="vatInput" name="vat" type="text" readonly>
@@ -370,9 +374,11 @@
 
           <div class="row mt-2">
             <div class="col-8 text-right font-weight-bold">VAT:</div>
-            
+            <div class="col-2">
+              <input type="checkbox" name="vatcheckbox" id="reviewvatcheckbox" class="form-control text-right vatcheckbox" aria-label="Checkbox for following text input">
+            </div>
             <div class="col-4">
-                <input class="form-control font-weight-bold text-right" id="reviewvatInput" name="vat" type="text" readonly>
+              <input class="form-control font-weight-bold text-right" id="reviewvatInput" name="vat" type="text" readonly>
             </div>
           </div>
 

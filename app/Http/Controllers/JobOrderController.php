@@ -163,6 +163,7 @@ class JobOrderController extends Controller
         $vatChecked = $request->has('vatcheckbox');
         $quotation->job_order_id = $request->input('joId');
         $quotation->vat = $vatChecked ? 1 : 0;
+        $quotation->status = "pending";
         $quotation->user_id = Auth::id();
         if($quotation->save()){
             return redirect()->route('index')->with('success', 'Quotation Saved.');
