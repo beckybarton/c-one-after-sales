@@ -7,7 +7,6 @@
     </div>
   </header>
   <main>
-  
     <div style="margin-top: 1%;"  class="flex justify-center">
       <div class="relative w-3/4 bg-white overflow-hidden rounded-lg shadow" style="padding: 1%;">
         <button  id="openModalBtn" class=" top-0 right-0 m-4 bg-green-500 text-white px-4 py-2 rounded-md">Add Job Order</button>
@@ -46,13 +45,13 @@
                   <small class="text-muted">{{ ucwords($jobOrder->unitcode) }} | {{ ucwords($jobOrder->unitdescription) }}</small>
                 </td>
                 <td class="py-2 px-4 border">
-                  <button class="view-data btn btn-success btn-sm" type="button" data-target="#viewModal" data-jobOrder="{{ $jobOrder }}">
+                  <button class="view-data btn btn-success btn-sm" type="button" data-modaltype="viewjo" data-target="#viewModal" data-jobOrder="{{ $jobOrder }}">
                     <i class="fas fa-eye"></i>
                   </button>
                 </td>
                 <td class="py-2 px-4 border">
                   @if ($jobOrder->status == "approved")
-                    <button class="new-quotation btn btn-success btn-sm" type="button" data-target="#newquotationmodal" data-jobOrder="{{ $jobOrder }}">
+                    <button class="new-quotation btn btn-success btn-sm" data-modaltype="ratejo" type="button" data-target="#newquotationmodal" data-jobOrder="{{ $jobOrder }}">
                       <i class="fas fa-comment-dollar"></i>
                     </button>
                   @endif
@@ -69,7 +68,7 @@
                 </td>
                 <td class="py-2 px-4 border">
                   @if ($jobOrder->quotation && $jobOrder->quotation->status == "approved")
-                    <button class="review-quotation btn btn-success btn-sm" data-modaltype="reviewmodal" data-target="#reviewquotationmodal" data-jobOrder="{{ $jobOrder }}">
+                    <button class="newbilling btn btn-success btn-sm" id="newbilling" data-target="#newbilling" data-jobOrder="{{ $jobOrder }}">
                       <i class="fas fa-check"></i>
                     </button>
                   @endif
@@ -89,62 +88,62 @@
     <div id="myModal" class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 hidden">
       <div style="width: 75%; max-height: 80vh; overflow-y: auto" class="bg-white rounded-xl shadow-xl p-8">
         <div class="modal-content">
-              <div class="modal-header">
-                  <h2 class="modal-title">After Sales : New Job Order</h2>
-              </div>
-              <div class="modal-body">
-                  <form action="{{ route('joborder.post') }}" method="POST">
-                      @csrf
-                      <div class="compact-form">
-                        <div class="form-group">
-                            <label for="customername">Customer Name</label>
-                            <input type="text" class="form-control" name="customername" id="customername" required>
-                        </div>
+          <div class="modal-header">
+            <h2 class="modal-title">After Sales : New Job Order</h2>
+          </div>
+            <div class="modal-body">
+              <form action="{{ route('joborder.post') }}" method="POST">
+                @csrf
+                <div class="compact-form">
+                  <div class="form-group">
+                    <label for="customername">Customer Name</label>
+                    <input type="text" class="form-control" name="customername" id="customername" required>
+                  </div>
 
-                        <div class="form-group">
-                            <label for="customeraddress">Customer Address</label>
-                            <input type="text" class="form-control" name="customeraddress" id="customeraddress" required>
-                        </div>
+                  <div class="form-group">
+                    <label for="customeraddress">Customer Address</label>
+                    <input type="text" class="form-control" name="customeraddress" id="customeraddress" required>
+                  </div>
 
-                        <div class="form-group">
-                            <label for="customercontact">Customer Contact Number</label>
-                            <input type="text" class="form-control" name="customercontact" id="customercontact" required>
-                        </div>
+                  <div class="form-group">
+                    <label for="customercontact">Customer Contact Number</label>
+                    <input type="text" class="form-control" name="customercontact" id="customercontact" required>
+                  </div>
 
-                        <div class="form-group">
-                            <label for="unitcode">Unit Code</label>
-                            <input type="text" class="form-control" name="unitcode" id="unitcode" required>
-                        </div>
+                  <div class="form-group">
+                    <label for="unitcode">Unit Code</label>
+                    <input type="text" class="form-control" name="unitcode" id="unitcode" required>
+                  </div>
 
-                        <div class="form-group">
-                            <label for="unitdescription">Unit Description</label>
-                            <input type="text" class="form-control" name="unitdescription" id="unitdescription" required>
-                        </div>
+                  <div class="form-group">
+                    <label for="unitdescription">Unit Description</label>
+                    <input type="text" class="form-control" name="unitdescription" id="unitdescription" required>
+                  </div>
 
-                        <div class="form-group">
-                            <label for="engine">Engine</label>
-                            <input type="text" class="form-control" name="engine" id="engine" required>
-                        </div>
+                  <div class="form-group">
+                    <label for="engine">Engine</label>
+                    <input type="text" class="form-control" name="engine" id="engine" required>
+                  </div>
 
-                        <div class="form-group">
-                            <label for="platenumber">Plate Number</label>
-                            <input type="text" class="form-control" name="platenumber" id="platenumber" required>
-                        </div>
-                      </div>
+                  <div class="form-group">
+                    <label for="platenumber">Plate Number</label>
+                    <input type="text" class="form-control" name="platenumber" id="platenumber" required>
+                  </div>
+                </div>
 
-                      <div id="fieldsContainer" class="my-3">
-                          <strong>JOB DESCRIPTIONS</strong>
-                      </div>
+                <div id="fieldsContainer" class="my-3">
+                  <strong>JOB DESCRIPTIONS</strong>
+                </div>
 
-                      <div class="d-flex justify-content-end mb-3">
-                          <button type="button" id="addTextFieldBtn" class="btn btn-primary mr-2">Add Job Descriptions</button>
-                          <button type="submit" class="btn btn-success">Save</button>
-                      </div>
-                  </form>
-              </div>
-              <div class="modal-footer">
-                  <button id="closeModalBtn" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-              </div>
+                <div class="d-flex justify-content-end mb-3">
+                  <button type="button" id="addTextFieldBtn" class="btn btn-primary mr-2">Add Job Descriptions</button>
+                  <button type="submit" class="btn btn-success">Save</button>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button id="closeModalBtn" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
           </div>
       </div>
     </div>
@@ -159,33 +158,8 @@
           </div>
 
           <div class="modal-body my-6">
-            <div class="mb-4 flex justify-between">
-              <label class="font-semibold">JO #</label>
-              <div class="text-gray-700 id"></div>
-            </div>
-
-            <div class="mb-4 flex justify-between">
-              <label class="font-semibold">Customer Name</label>
-              <div class="text-gray-700 customername"></div>
-            </div>
-
-            <div class="mb-4 flex justify-between">
-              <label class="font-semibold">Maker</label>
-              <div class="text-gray-700 userid"></div>
-            </div>
-
-            <div class="mb-4 flex justify-between">
-              <label class="font-semibold">Unit Code</label>
-              <div class="text-gray-700 unitcode"></div>
-            </div>
-
-            <div class="mb-4 flex justify-between">
-              <label class="font-semibold">Unit Description</label>
-              <div class="text-gray-700 unitdescription"></div>
-            </div>
-
-              <!-- Job Descriptions -->
-            <div class="job-descriptions-list mt-4"></div>
+            @include('dashboard.customerinformation')
+            @include('dashboard.jobdescriptions')
           </div>
 
           <form class="space-y-6" action="{{ route('joborder.approve') }}" method="POST">
@@ -202,120 +176,76 @@
         </div>
       </div>
     </div>
-    <!-- END OF VIEW MODAL -->
 
     <!-- QUOTATION MODAL -->
-    <div id="newquotationmodal" class="fixed top-0 left-0 w-full h-full overflow-y-auto flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+    <div id="newquotationmodal" class="newquotationmodal fixed top-0 left-0 w-full h-full overflow-y-auto flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
       <div style="width: 75%; height: 80vh; overflow-y: auto !important" class="bg-white rounded-xl shadow-xl p-8 overflow-y-auto">
         <h2 class="text-2xl mb-4">Job Order Details</h2>
         
         <div class="modal-body">
-        <div class="mb-4 flex justify-between">
-          <label class="font-semibold">JO #</label>
-          <div class="text-gray-700 id"></div>
-          </div>
-
-          <div class="mb-4 flex justify-between">
-            <label class="font-semibold">Customer Name</label>
-            <div class="text-gray-700 customername"></div>
-          </div>
-
-          <div class="mb-4 flex justify-between">
-            <label class="font-semibold">Maker</label>
-            <div class="text-gray-700 userid"></div>
-          </div>
-
-          <div class="mb-4 flex justify-between">
-            <label class="font-semibold">Unit Code</label>
-            <div class="text-gray-700 unitcode"></div>
-          </div>
-
-          <div class="mb-4 flex justify-between">
-            <label class="font-semibold">Unit Description</label>
-            <div class="text-gray-700 unitdescription"></div>
-          </div>
+          @include('dashboard.customerinformation')
           <form class="space-y-6" id="amountContainer" action="{{ route('joborder.quote') }}" method="POST">
-            <input type="hidden" class="joId" value="" name="joId">
             @csrf
-            <table class="table table-borderless">
-            <tr class="bg-secondary"><td colspan="4"><strong>DESCRIPTIONS</strong></td></tr>
-              <tr>
-                <td style="display:none"><strong>ID</strong></td>
-                <td><strong>DESCRIPTION</strong></td>
-                <td><strong>CURRENT RATE</strong></td>
-                <td><strong>UPDATE RATE</strong></td>
-              </tr>
-              <tbody class="job-descriptions-list-quotation">
-
-              </tbody>
-            </table>
-            <table class="table table-borderless">
-              <tr class="bg-secondary"><td colspan="5"><strong>MATERIALS</strong></td></tr>
-              <tr>
-                <td><strong>ID</strong></td>
-                <td><strong>MATERIALS</strong></td>
-                <td><strong>CURRENT RATE</strong></td>
-                <td><strong>UPDATE RATE</strong></td>
-                <td><strong></strong></td>
-              </tr>
-              <tbody class="materials-list-quotation">
-
-              </tbody>
-            </table>
+            @include('dashboard.jobdescriptions')
+            @include('dashboard.materials')
             <button type="button" id="addmaterialsBtn" class=""><i class="bi bi-plus-circle-fill"></i> Add Item</button>
+            <!-- @include('dashboard.summaryamount') -->
             <div class="row">
               <div class="col-8 text-right font-weight-bold">TOTAL LABOR:</div>
               <div class="col-4">
-                  <input class="form-control font-weight-bold text-right" id="totalLabor" type="text" readonly>
+                <input class="form-control font-weight-bold text-right" id="totalLabor" type="text" readonly>
               </div>
             </div>
 
             <div class="row mt-2">
               <div class="col-8 text-right font-weight-bold">TOTAL MATERIALS:</div>
               <div class="col-4">
-                  <input class="form-control font-weight-bold text-right" id="totalMaterials" type="text" readonly>
+                <input class="form-control font-weight-bold text-right" id="totalMaterials" type="text" readonly>
               </div>
             </div>
 
             <div class="row mt-2">
               <div class="col-8 text-right font-weight-bold">SUB TOTAL:</div>
               <div class="col-4">
-                  <input class="form-control font-weight-bold text-right" id="subTotal" type="text" readonly>
+                <input class="form-control font-weight-bold text-right" id="subTotal" type="text" readonly>
               </div>
             </div>
 
             <div class="row mt-2">
               <div class="col-8 text-right font-weight-bold">VAT:</div>
-                <div class="col-2">
-                  <input type="checkbox" name="vatcheckbox" id="vatcheckbox" class="form-control text-right vatcheckbox" aria-label="Checkbox for following text input">
-                </div>
+              <div class="col-2">
+                <input type="checkbox" name="vatcheckbox" id="vatcheckbox" class="form-control text-right vatcheckbox" aria-label="Checkbox for following text input">
+              </div>
               
               <div class="col-2">
-                  <input class="form-control font-weight-bold text-right" id="vatInput" name="vat" type="text" readonly>
+                <input class="form-control font-weight-bold text-right" id="vatInput" name="vat" type="text" readonly>
               </div>
             </div>
 
             <div class="row mt-2">
               <div class="col-8 text-right font-weight-bold">OVERALL TOTAL:</div>
               <div class="col-4">
-                  <input class="form-control font-weight-bold text-right" id="totalInput" type="text" readonly>
+                <input class="form-control font-weight-bold text-right" id="totalInput" type="text" readonly>
               </div>
             </div>
-
+            
             <div class="row mt-2">
             <div class="col-8 text-right font-weight-bold"></div>
               <div class="col-4">
-                @if($jobOrder->quotation->status != "approved")
-                  <div class="text-right font-weight-bold"><button id="quoteJo" type="submit" class="mt-4 bg-green-500 text-white px-4 py-2 rounded quoteJo">Send Quotation</button></div>
-                @endif
+                <!-- @if($jobOrder->quotation->status != "approved") -->
+                  <!-- <div class="text-right font-weight-bold"><button id="quoteJo" type="submit" class="mt-4 bg-green-500 text-white px-4 py-2 rounded quoteJo">Send Quotation</button></div> -->
+                <!-- @endif -->
               </div>
+            </div>
+            <div class="modal-footer" style="margin-top: 1%;">
+              <!-- <div class="text-right font-weight-bold"><button id="quoteJo" type="submit" class="mt-4 bg-green-500 text-white px-4 py-2 rounded quoteJo">Send Quotation</button></div> -->
+              <button id="quoteJo" type="submit" class="btn btn-success quoteJo">Send Quotation</button>
+              <button type="button" id="closenewquotationbtn" class="btn btn-danger">Close</button>
             </div>
           </form>
         </div>
 
-        <div class="modal-footer" style="margin-top: 1%;">
-          <button id="closenewquotationbtn" class="btn btn-danger">Close</button>
-        </div>
+        
         <!-- <button id="closenewquotationbtn" class="mt-4 bg-red-500 text-white px-4 py-2 rounded">Close</button> -->
         
       </div>
@@ -329,40 +259,13 @@
         <h2 class="text-2xl mb-4">QUOTATION FOR APPROVAL</h2>
         
         <div class="modal-body">
-        <table class="table table-borderless">
-          <tr>
-            <td><strong>JO # </strong></td>
-            <td><span class="reviewquotationid uppercase"></span></td>
-          </tr>
-          <tr>
-            <td><strong>CUSTOMER NAME</strong></td>
-            <td><span class="reviewquotationcustomername uppercase"></span></td>
-          </tr>
-          <tr>
-            <td><strong>MAKER </strong></td>
-            <td><span class="reviewquotationuserid uppercase"></span></td>
-          </tr>
-          <tr>
-            <td><strong>UNIT CODE </strong></td>
-            <td><span class="reviewquotationunitcode uppercase"></span></td>
-          </tr>
-          <tr>
-            <td><strong>UNIT DESCRIPTION </strong></td>
-            <td><span class="reviewquotationunitdescription uppercase"></span></td>
-          </tr>
-        </table>
-        <table class="table table-borderless reviewquotation-job-descriptions-list">
-        
-        </table>
-        <table class="table table-borderless reviewquotation-materials-list">
-        </table>
+          @include('dashboard.customerinformation')
         </div>
-        
         <form class="space-y-6" action="{{ route('joborder.quotationDecision') }}" method="POST">
           @csrf
+          @include('dashboard.jobdescriptions')
+          @include('dashboard.materials')
           <input type="hidden" class="reviewquotationjoId" value="" name="joIdquotation">
-          
-          
           <div class="row">
               <div class="col-8 text-right font-weight-bold">TOTAL LABOR:</div>
               <div class="col-4">
@@ -401,7 +304,7 @@
             </div>
           </div>
           
-          <div id="reviewquotationContainer" class="reviewquotationContainer">
+          <div id="reviewquotationContainer" class="reviewquotationContainer text-right">
             
           </div>
         </form>
@@ -413,6 +316,9 @@
     </div>
     <!-- END OF QUOTATION FOR APPROVAL -->
     
+    @include('dashboard.billing')
+
+
   <script src="{{asset('assets/js/dashboard.js')}}" defer></script>
   <script>
     var isUserAdmin = @json(auth()->user() && auth()->user()->isAdmin());

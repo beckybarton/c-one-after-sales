@@ -19,6 +19,10 @@
     .compact-form .form-group {
         margin-bottom: 0.2rem;  /* Reducing margin-bottom for compactness */
     }
+
+    .hide-column {
+      display: none;
+    }
   </style>
 
 </head>
