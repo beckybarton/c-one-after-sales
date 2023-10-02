@@ -389,8 +389,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     $(document).ready(function() {
-        $('.review-quotation').click(function(e) { 
-            modalType = $(this).data('modaltype');  
+        // $('.review-quotation').click(function(e) { 
+        $('.review-quotation').click(function() { 
+            var modalType = $(this).data('modaltype');  
             var jobOrder = $(this).data('joborder');
             vat = jobOrder.quotation.vat;
 
@@ -880,9 +881,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // var materialslist = $('.materials-list');
         // materialslist.empty();
-        var materialslist = document.querySelector('.materials-list');
-        while (materialslist.firstChild) {
-            materialslist.removeChild(materialslist.firstChild);
+        console.log(modalType);
+        // var materialslist = document.querySelector('.materials-list');
+        // while (materialslist.firstChild) {
+        //     materialslist.removeChild(materialslist.firstChild);
+        // }
+        if(modalType == "ratejo"){
+            var materialslist = document.querySelector('#newquotationmodal .materials-list');
+
+            while (materialslist.firstChild) {
+                materialslist.removeChild(materialslist.firstChild);
+            }
+        }
+        else{
+            var materialslist = document.querySelector('#reviewquotationmodal .materials-list');
+
+            while (materialslist.firstChild) {
+                materialslist.removeChild(materialslist.firstChild);
+            }
         }
 
         if(jobOrder.job_order_materials.length>0){
