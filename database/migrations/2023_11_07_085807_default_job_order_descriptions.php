@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('quotations', function (Blueprint $table) {
-            // $table->integer('approver_id')->default(0)->change();
+        Schema::table('job_descriptions', function (Blueprint $table) {
+            $table->float('amount')->default(0)->change();
         });
     }
 
@@ -21,8 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('quotations', function (Blueprint $table) {
-            //
-        });
+        //
     }
 };

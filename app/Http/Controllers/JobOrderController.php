@@ -37,15 +37,27 @@ class JobOrderController extends Controller
 
         $jobOrder->save();
 
-        $descriptions = $request->input('descriptions'); 
-
-        foreach ($descriptions as $desc) {
+        $descriptions = $request->input('descriptions');
+        $amounts = $request->input('amounts');
+        foreach ($descriptions as $key => $desc) {
+            $amount = $amounts[$key];
             $jobDescription = new JobDescription();
             $jobDescription->job_order_id = $jobOrder->id;
             $jobDescription->description = $desc;
+            $jobDescription->amount = $amount; 
             $jobDescription->save();
         }
 
+        $materials = $request->input('materials');
+        $materialamounts = $request->input('materialamounts');
+        foreach ($materials as $key => $material) {
+            $amount = $materialamounts[$key];
+            $jobOrderMaterial = new JobOrderMaterial();
+            $jobOrderMaterial->job_order_id = $jobOrder->id;
+            $jobOrderMaterial->material = $material;
+            $jobOrderMaterial->amount = $amount; 
+            $jobOrderMaterial->save();
+        }
         return redirect()->route('index');
     }
 
@@ -61,9 +73,9 @@ class JobOrderController extends Controller
             $status = "rejected";
         }
 
-        $joborder->status = $status; // replace with your actual logic
-        $joborder->approver_id = Auth::id(); // replace with your actual logic
-        $joborder->approved_date = now(); // replace with your actual logic
+        $joborder->status = $status; 
+        $joborder->approver_id = Auth::id();
+        $joborder->approved_date = now(); 
         
         if($joborder->save()){
             if($status == "approved"){
@@ -124,8 +136,7 @@ class JobOrderController extends Controller
                 $jobDescription->save();
             }
             
-        }
-        
+        }        
 
         $materialids = $request->input('materialids'); 
         $materials = $request->input('materials'); 

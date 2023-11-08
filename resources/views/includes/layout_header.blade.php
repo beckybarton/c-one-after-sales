@@ -8,7 +8,6 @@
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
-              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
               <a href="/dashboard" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Dashboard</a>
               <a href="/users" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Users</a>
             </div>
@@ -18,8 +17,15 @@
         <div class="hidden md:block">
           <div class="ml-4 flex items-center md:ml-6">
             @auth
-              <span class=" text-left text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logged in as {{ ucwords(auth()->user()->first_name) }} {{ ucwords(auth()->user()->last_name) }}</span>
+              <span class=" text-left text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logged in as {{ ucwords(auth()->user()->first_name) }} {{ ucwords(auth()->user()->last_name) }} || {{ ucwords(auth()->user()->role) }} </span>
+              <div id="userRole" data-userRole="{{ auth()->user()->role }}"></div>
             @endauth
+            <form action="{{ route('logout') }}" method="POST">
+              @csrf
+              <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                  Logout
+              </button>
+            </form>
             <!-- <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">View notifications</span>

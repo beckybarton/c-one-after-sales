@@ -27,6 +27,8 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'registerSave'])->name('register.post');
 Route::get('/users', [UserController::class, 'index'])->name('users');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 // JOB ORDERS
 // Route::get('/dashboard', [DashboardController::class, 'index'])->name('index');
